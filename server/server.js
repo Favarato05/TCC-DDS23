@@ -11,6 +11,14 @@ require('dotenv').config()
 // Se der errado, a porta será a 5000
 const port = process.env.PORT || 5000;
 
+// MIDDLEWARE PARA ENTENDER O JSON
+// Lê os dados em JSON
+app.use(express.json())
+// Servidor está apto a ler os dados dos formulários
+app.use(express.urlencoded({ extended: true }))
+// Permite ler cookies e alterar também
+app.use(require(`cookie-parser`)())
+
 // CONFIGURAÇÃO DO EJS E PASTAS DO FRONT END
 // Define o EJS como engine do front
 app.set("view engine", "ejs");
@@ -49,7 +57,7 @@ app.use("/usuarios", usuariosRoutes);
 
 // Traz as configurações do banco
 const pool = require("./config/db.js");
-// Cria uma conexão teste com o banco
+//Cria uma conexão teste com o banco
 (async () => {
   try {
     // Se o banco de dados estiver ativo, ai sim o servidor será iniciado
@@ -57,6 +65,7 @@ const pool = require("./config/db.js");
     console.log("Banco conectado");
     // Se o banco de dados estiver ativo, ai sim o servidor será iniciado
     app.listen(port, () => {
+      console.log(`Link: http://localhost:${port}`);
       console.log(`Servidor funcionando na porta ${port}`);
     });
   } catch (erro) {
