@@ -3,8 +3,13 @@ const express = require("express");
 const app = express();
 // módulo do node para lidar com caminho de arquivos
 const path = require("path");
-// Define a porta do servidor
-const port = 3000;
+
+// Importa o módulo do dotenv, lê o arquivo .env, e já configura inicialmente
+require('dotenv').config()
+
+// Define a porta do servidor com base nas variáveis de ambiente
+// Se der errado, a porta será a 5000
+const port = process.env.PORT || 5000;
 
 // CONFIGURAÇÃO DO EJS E PASTAS DO FRONT END
 // Define o EJS como engine do front
@@ -37,7 +42,26 @@ const usuariosRoutes = require("./routes/usuarioRoutes.js");
 app.use("/usuarios", usuariosRoutes);
 
 //Função para subir o servidor
-app.listen(port, () => {
-  console.log(`Servidor ativo na porta: ${port}`);
-  console.log(`Link: http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Servidor ativo na porta: ${port}`);
+//   console.log(`Link: http://localhost:${port}`);
+// });
+
+// Traz as configurações do banco
+const pool = require("./config/db.js");
+// Cria uma conexão teste com o banco
+(async () => {
+  try {
+    // Se o banco de dados estiver ativo, ai sim o servidor será iniciado
+    await pool.getConnection();
+    console.log("Banco conectado");
+    // Se o banco de dados estiver ativo, ai sim o servidor será iniciado
+    app.listen(port, () => {
+      console.log(`Servidor funcionando na porta ${port}`);
+    });
+  } catch (erro) {
+    // Se deu erro, avisa e encerra a tentativa
+    console.log("Erro ao tentar conectar com o banco de dados");
+    process.exit(1);
+  }
+})();
