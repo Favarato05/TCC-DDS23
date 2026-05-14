@@ -49,7 +49,7 @@ CREATE TABLE interesses(
 );
 
 -- login: greg@gmail.com
--- senha: cr7
+-- senha: greg
 -- INSERTS DE USUÁRIOS
 -- ADM
 INSERT INTO usuarios(nome, email, senha, telefone, perfil)

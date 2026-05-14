@@ -25,7 +25,7 @@ app.set("view engine", "ejs");
 // Aponta para o express e ejs onde estão as páginas
 app.set("views", path.join(__dirname, "../client/views"));
 // Deixa a pasta public acessível ao usuário
-app.set(express.static(path.join(__dirname, "../client/public")));
+app.use(express.static(path.join(__dirname, "../client/public")));
 
 // ROTAS PÚBLICAS
 // Criação de rotas padrão
